@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>College football model</title>
-<meta name="theme-color" content="#F3F5F1" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#121715" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0F2038" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A1424" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -13,62 +13,78 @@
 <meta name="apple-mobile-web-app-title" content="CFB Model">
 <style>
 :root {
-  --bg: #F3F5F1; --ink: #17211C; --muted: #56635B; --rule: #D3DAD2; --wash: #E7ECE5;
-  --model: #1D4F91; --market: #5C6862; --flag: #8F5206; --flagbg: #F5E6CC;
-  --good: #1D7447; --bad: #A33730;
-  --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --sans: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --bg: #EEF1F5; --panel: #FFFFFF; --ink: #101B2B; --muted: #5A6778; --rule: #DDE3EA; --wash: #F4F6F9;
+  --band: #0F2038; --bandrule: #0F2038; --bandink: #F2F5F9; --bandmuted: #9FB0C6; --accent: #5BD593;
+  --model: #1F5FBF; --market: #6B7787; --flag: #8A4B00; --flagbg: #FBEBD0;
+  --good: #1B7A47; --bad: #B23A32;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #121715; --ink: #E7EDE9; --muted: #9BA8A1; --rule: #2B352F; --wash: #1A221E;
-    --model: #7FAEEA; --market: #A7B3AC; --flag: #E6AE5C; --flagbg: #33270F;
+    --bg: #0B1220; --panel: #121B2C; --ink: #E8EEF6; --muted: #97A5B8; --rule: #24324A; --wash: #0F1828;
+    --band: #0A1424; --bandrule: #1C2A42; --bandink: #F2F5F9; --bandmuted: #8FA1B8;
+    --model: #7FB0F5; --market: #9AA7B8; --flag: #F0B35E; --flagbg: #3A2A0E;
     --good: #5FC28B; --bad: #F08A80;
   }
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); }
-.wrap { max-width: 1240px; margin: 0 auto; padding: 24px 20px 56px; }
-h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01em; margin: 0; }
-h1 { font-size: 30px; line-height: 1.15; }
-h2 { font-size: 22px; margin-bottom: 4px; }
-h3 { font-family: var(--sans); font-size: 15px; letter-spacing: 0; }
-.sub { color: var(--muted); margin: 4px 0 0; }
-nav { display: flex; gap: 26px; margin-top: 20px; border-bottom: 1px solid var(--rule); }
-nav button { font: inherit; background: none; border: 0; color: var(--muted); padding: 8px 0 10px; cursor: pointer;
-  border-bottom: 3px solid transparent; margin-bottom: -1px; display: flex; gap: 7px; align-items: center; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 var(--sans); -webkit-text-size-adjust: 100%; }
+h1, h2, h3 { font-family: var(--sans); margin: 0; }
+h1 { font-size: 22px; line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
+h2 { font-size: 19px; line-height: 1.25; font-weight: 700; letter-spacing: -0.005em; margin-bottom: 4px; }
+h3 { font-size: 14.5px; font-weight: 600; }
+.band { background: var(--band); color: var(--bandink); border-bottom: 1px solid var(--bandrule); }
+.inner { max-width: 1240px; margin: 0 auto; padding: 18px 20px 0; }
+.brand { display: flex; gap: 14px; align-items: center; }
+.brand svg { flex: none; }
+.sub { margin: 2px 0 0; color: var(--bandmuted); font-size: 13.5px; }
+nav { display: flex; gap: 4px; margin-top: 14px; }
+nav button { font: inherit; font-size: 14.5px; background: none; border: 0; color: var(--bandmuted); padding: 9px 14px 11px;
+  cursor: pointer; border-bottom: 3px solid transparent; display: flex; gap: 7px; align-items: center; }
+nav button:hover { color: var(--bandink); }
 nav button svg { display: none; }
-nav button[aria-current="page"] { color: var(--ink); border-bottom-color: var(--model); font-weight: 600; }
+nav button[aria-current="page"] { color: var(--bandink); border-bottom-color: var(--accent); font-weight: 600; }
+nav button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 :focus-visible { outline: 2px solid var(--model); outline-offset: 2px; border-radius: 3px; }
-main { padding-top: 22px; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 22px 20px 56px; }
 .toolbar { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin-bottom: 14px; }
 .group { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.group > span { color: var(--muted); margin-right: 2px; }
-.chip, select { font: inherit; font-size: 13.5px; color: var(--ink); background: transparent; border: 1px solid var(--rule);
-  border-radius: 6px; padding: 4px 10px; cursor: pointer; }
-select { padding: 5px 8px; background: var(--bg); }
-.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.group > span { color: var(--muted); margin-right: 2px; font-size: 13.5px; }
+.chip, select { font: inherit; font-size: 13.5px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 5px 11px; cursor: pointer; }
+select { padding: 6px 8px; }
+.chip:hover:not(:disabled) { border-color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
 .chip:disabled { opacity: .4; cursor: default; }
-input[type="search"] { font: inherit; font-size: 14px; color: var(--ink); background: transparent; border: 1px solid var(--rule);
-  border-radius: 6px; padding: 5px 10px; width: 170px; }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; color: var(--muted); font-size: 13.5px; margin: 0 0 8px; }
+input[type="search"] { font: inherit; font-size: 14px; color: var(--ink); background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 6px 11px; width: 170px; }
+.keys { display: flex; flex-wrap: wrap; gap: 8px 38px; margin: 0 0 14px; padding: 0; }
+.keys dt { font-size: 12.5px; color: var(--muted); }
+.keys dd { margin: 0; font-weight: 600; font-size: 16px; font-variant-numeric: tabular-nums; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; color: var(--muted); font-size: 13.5px; margin: 0 0 10px; }
 .legend svg { vertical-align: -3px; margin-right: 5px; }
+.panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
 .scroll { overflow-x: auto; }
 table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-th { text-align: left; font-weight: 600; font-size: 13px; color: var(--muted); padding: 8px 12px 8px 0;
-  border-bottom: 1px solid var(--ink); white-space: nowrap; }
-td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+th { text-align: left; font-weight: 600; font-size: 12.5px; color: var(--muted); padding: 10px 12px 10px 0;
+  background: var(--wash); border-bottom: 1px solid var(--rule); white-space: nowrap; }
+td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+.panel th:first-child, .panel td:first-child { padding-left: 16px; }
+.panel th:last-child, .panel td:last-child { padding-right: 16px; }
+tbody tr:last-child td { border-bottom: 0; }
 tbody tr:hover { background: var(--wash); }
 .num { text-align: right; padding-right: 14px; white-space: nowrap; }
 th.num { padding-right: 14px; }
 .game { font-weight: 600; min-width: 190px; }
 .game small { display: block; font-weight: 400; color: var(--muted); font-size: 12.5px; }
 .scale { display: flex; justify-content: space-between; font-weight: 400; font-size: 12px; color: var(--muted); }
-.bell { display: block; width: 200px; height: 26px; }
-.bell .axis { stroke: var(--rule); stroke-width: 2; }
-.bell .link { stroke: var(--model); stroke-width: 2; opacity: .55; }
-.bell .mk { fill: var(--bg); stroke: var(--market); stroke-width: 2.5; }
-.bell .md { fill: var(--model); stroke: var(--bg); stroke-width: 2; }
+.bell { display: block; width: 220px; height: 28px; }
+.bell .turf { fill: var(--wash); stroke: var(--rule); stroke-width: 1; }
+.bell .tick { stroke: var(--rule); stroke-width: 1.5; }
+.bell .mid { stroke: var(--muted); stroke-width: 1.5; opacity: .55; }
+.bell .link { stroke: var(--model); stroke-width: 2.5; opacity: .5; }
+.bell .mk { fill: var(--panel); stroke: var(--market); stroke-width: 2.5; }
+.bell .md { fill: var(--model); stroke: var(--panel); stroke-width: 2; }
 .nw { white-space: nowrap; }
 .tl { font-size: 13px; margin-top: 2px; }
 .flag { display: block; width: fit-content; margin: 3px 0 0; padding: 1px 8px; border-radius: 4px; font-size: 12.5px;
@@ -76,8 +92,9 @@ th.num { padding-right: 14px; }
 .muted { color: var(--muted); }
 .count { color: var(--muted); font-size: 13.5px; margin: 10px 0 0; }
 .empty { padding: 28px 0; max-width: 60ch; }
+.verdict { font-size: 17px; line-height: 1.45; max-width: 66ch; margin: 0 0 6px; }
 .block { margin-top: 34px; }
-.block:first-child { margin-top: 0; }
+.block:first-child, .verdict + .block { margin-top: 26px; }
 .block > p { margin: 2px 0 14px; color: var(--muted); max-width: 70ch; }
 .miss { display: grid; grid-template-columns: 70px 1fr 56px; gap: 6px 10px; align-items: center; max-width: 560px; margin-bottom: 18px; }
 .miss .bar { height: 12px; border-radius: 0 4px 4px 0; }
@@ -100,6 +117,11 @@ th.num { padding-right: 14px; }
 .chipres.W { color: var(--good); }
 .chipres.L { color: var(--bad); }
 .chipres.P { color: var(--muted); }
+.nb { position: relative; height: 10px; width: 150px; background: var(--wash); border-radius: 5px; }
+.nb::after { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--muted); opacity: .5; }
+.nb i { position: absolute; top: 0; bottom: 0; border-radius: 5px; }
+.nb i.pos { background: var(--model); }
+.nb i.neg { background: var(--market); }
 .guide { max-width: 72ch; }
 .guide h2 { margin-top: 28px; }
 .guide h2:first-child { margin-top: 0; }
@@ -107,31 +129,50 @@ th.num { padding-right: 14px; }
 .foot { margin-top: 44px; padding-top: 14px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13.5px; max-width: 76ch; }
 .sr { position: absolute; left: -9999px; }
 @media (max-width: 700px) {
-  h1 { font-size: 26px; }
+  h1 { font-size: 20px; }
+  .inner { padding: 16px 14px 16px; }
   .wrap { padding: 18px 14px 96px; }
-  nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; margin: 0; gap: 0; background: var(--bg);
-    border-top: 1px solid var(--rule); border-bottom: 0; padding-bottom: env(safe-area-inset-bottom); }
+  nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; margin: 0; gap: 0; background: var(--panel);
+    border-top: 1px solid var(--rule); padding-bottom: env(safe-area-inset-bottom); }
   nav button { flex: 1; flex-direction: column; gap: 2px; justify-content: center; align-items: center; font-size: 12px;
-    padding: 8px 0 8px; border-bottom: 0; margin: 0; border-top: 3px solid transparent; }
+    padding: 8px 0; border-bottom: 0; border-top: 3px solid transparent; color: var(--muted); }
+  nav button:hover { color: var(--ink); }
   nav button svg { display: block; }
-  nav button[aria-current="page"] { border-top-color: var(--model); }
+  nav button[aria-current="page"] { color: var(--ink); border-top-color: var(--model); border-bottom-color: transparent; }
   input[type="search"] { width: 100%; }
+  .toolbar { gap: 8px; margin-bottom: 10px; }
+  .toolbar .group { flex-wrap: nowrap; overflow-x: auto; width: 100%; padding-bottom: 2px; scrollbar-width: none; }
+  .toolbar .group::-webkit-scrollbar { display: none; }
+  .toolbar .chip, .toolbar select, .toolbar .group > span { flex: none; white-space: nowrap; }
+  .legend span:last-child { display: none; }
+  .keys { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 16px; }
+  .cards table, .cards tbody { display: block; }
+  .cards thead { display: none; }
+  .cards tbody tr { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; padding: 14px 16px; border-bottom: 1px solid var(--rule); }
+  .cards tbody tr:last-child { border-bottom: 0; }
+  .cards td { display: block; border: 0; padding: 0 !important; text-align: left; }
+  .cards td[data-l]::before { content: attr(data-l); display: block; font-size: 12px; color: var(--muted); }
+  .cards td.game, .cards td.strip { grid-column: 1 / -1; }
+  .cards td.lean, .cards td.tot { grid-column: auto; }
+  .cards .bell { width: 100%; height: auto; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>College football model</h1>
-    <p class="sub" id="sub"></p>
-  </header>
+<header class="band"><div class="inner">
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="9" fill="#17304F"/><line x1="20" y1="11" x2="20" y2="29" stroke="#5A6C86" stroke-width="1.5"/><line x1="13" y1="20" x2="27" y2="20" stroke="#7FAEEA" stroke-width="2"/><circle cx="12" cy="20" r="4.5" fill="none" stroke="#F3F5F1" stroke-width="2.2"/><circle cx="28" cy="20" r="5" fill="#7FAEEA"/></svg>
+    <div><h1>College football model</h1><p class="sub" id="sub"></p></div>
+  </div>
   <nav id="nav" aria-label="Sections"></nav>
+</div></header>
+<div class="wrap">
   <main id="main"></main>
   <p class="foot">The model rates every FBS team from this season's games plus last season's carryover, then compares its numbers with the average betting line. Break-even for spread and over/under picks at standard -110 pricing is 52.4%. A weekly slate is about 60 games, so judge the record after 8 to 10 weeks, not one.</p>
 </div>
 
 <script>
-var D = {"games": [{"id": 401871067, "week": 7, "home": "Middle Tennessee", "away": "Delaware", "neutral": 0, "pm": 0.37, "ls": 2.5, "pt": 51.04, "lt": 47.5, "kick": "2026-10-13T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401871053, "week": 7, "home": "Jacksonville State", "away": "Florida International", "neutral": 0, "pm": 0.45, "ls": -3.0, "pt": 45.88, "lt": 43.5, "kick": "2026-10-14T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401871054, "week": 7, "home": "Missouri State", "away": "Kennesaw State", "neutral": 0, "pm": -0.86, "ls": 3.0, "pt": 50.41, "lt": 51.5, "kick": "2026-10-14T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401871068, "week": 7, "home": "Sam Houston", "away": "Western Kentucky", "neutral": 0, "pm": 1.02, "ls": 1.25, "pt": 56.21, "lt": 52.75, "kick": "2026-10-15T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401869950, "week": 7, "home": "Old Dominion", "away": "Georgia Southern", "neutral": 0, "pm": -1.89, "ls": 3.75, "pt": 51.49, "lt": 46.75, "kick": "2026-10-15T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401862800, "week": 7, "home": "UAB", "away": "East Carolina", "neutral": 0, "pm": -1.83, "ls": 4.5, "pt": 48.74, "lt": 48.75, "kick": "2026-10-15T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401860923, "week": 7, "home": "Texas State", "away": "Colorado State", "neutral": 0, "pm": 16.15, "ls": -13.25, "pt": 68.4, "lt": 68.5, "kick": "2026-10-16T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401862801, "week": 7, "home": "Tulane", "away": "Memphis", "neutral": 0, "pm": -5.3, "ls": 6.75, "pt": 53.85, "lt": 53.5, "kick": "2026-10-16T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401869844, "week": 7, "home": "Coastal Carolina", "away": "App State", "neutral": 0, "pm": -0.83, "ls": 1.25, "pt": 52.13, "lt": 51.75, "kick": "2026-10-17T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401858493, "week": 7, "home": "Purdue", "away": "Washington", "neutral": 0, "pm": -2.72, "ls": -3.0, "pt": 57.46, "lt": 52.5, "kick": "2026-10-17T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401858491, "week": 7, "home": "Michigan State", "away": "Northwestern", "neutral": 0, "pm": -8.35, "ls": 7.5, "pt": 54.31, "lt": 48.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856830, "week": 7, "home": "Kansas State", "away": "Kansas", "neutral": 0, "pm": -4.13, "ls": -6.25, "pt": 56.85, "lt": 55.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856724, "week": 7, "home": "Texas", "away": "Florida", "neutral": 0, "pm": 13.81, "ls": -10.0, "pt": 51.76, "lt": 52.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856720, "week": 7, "home": "LSU", "away": "Mississippi State", "neutral": 0, "pm": 13.48, "ls": -11.75, "pt": 53.26, "lt": 58.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858267, "week": 7, "home": "Boston College", "away": "Pittsburgh", "neutral": 0, "pm": -12.34, "ls": 6.25, "pt": 47.82, "lt": 44.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401869957, "week": 7, "home": "James Madison", "away": "Georgia State", "neutral": 0, "pm": 12.64, "ls": -11.75, "pt": 56.48, "lt": 58.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401866441, "week": 7, "home": "Bowling Green", "away": "Ball State", "neutral": 0, "pm": 3.46, "ls": -7.25, "pt": 50.05, "lt": 44.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858268, "week": 7, "home": "SMU", "away": "Virginia", "neutral": 0, "pm": 6.69, "ls": -8.75, "pt": 51.21, "lt": 52.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401862802, "week": 7, "home": "Army", "away": "Florida Atlantic", "neutral": 0, "pm": 0.65, "ls": -2.75, "pt": 54.25, "lt": 56.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858488, "week": 7, "home": "Indiana", "away": "Ohio State", "neutral": 0, "pm": -4.35, "ls": 3.5, "pt": 49.32, "lt": 50.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856829, "week": 7, "home": "West Virginia", "away": "Cincinnati", "neutral": 0, "pm": 2.11, "ls": -2.5, "pt": 61.57, "lt": 63.0, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858489, "week": 7, "home": "Maryland", "away": "Rutgers", "neutral": 0, "pm": 6.44, "ls": -4.5, "pt": 58.83, "lt": 58.25, "kick": "2026-10-17T16:30:00.000Z", "hp": null, "ap": null}, {"id": 401862803, "week": 7, "home": "Temple", "away": "Charlotte", "neutral": 0, "pm": 22.07, "ls": -21.25, "pt": 47.61, "lt": 49.5, "kick": "2026-10-17T17:00:00.000Z", "hp": null, "ap": null}, {"id": 401866442, "week": 7, "home": "Buffalo", "away": "Massachusetts", "neutral": 0, "pm": 6.16, "ls": -3.25, "pt": 47.77, "lt": 42.75, "kick": "2026-10-17T17:00:00.000Z", "hp": null, "ap": null}, {"id": 401866443, "week": 7, "home": "Central Michigan", "away": "Western Michigan", "neutral": 0, "pm": -10.06, "ls": 7.0, "pt": 43.64, "lt": 42.75, "kick": "2026-10-17T17:30:00.000Z", "hp": null, "ap": null}, {"id": 401858490, "week": 7, "home": "Michigan", "away": "Penn State", "neutral": 0, "pm": 6.79, "ls": -5.75, "pt": 47.31, "lt": 42.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856828, "week": 7, "home": "Texas Tech", "away": "Arizona State", "neutral": 0, "pm": 21.21, "ls": -14.5, "pt": 51.24, "lt": 48.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401858266, "week": 7, "home": "Duke", "away": "North Carolina", "neutral": 0, "pm": 3.95, "ls": -3.5, "pt": 50.89, "lt": 47.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856723, "week": 7, "home": "Tennessee", "away": "Alabama", "neutral": 0, "pm": -14.02, "ls": 7.5, "pt": 54.28, "lt": 53.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856721, "week": 7, "home": "Ole Miss", "away": "Missouri", "neutral": 0, "pm": 1.55, "ls": -6.0, "pt": 55.56, "lt": 59.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401858264, "week": 7, "home": "Virginia Tech", "away": "Georgia Tech", "neutral": 0, "pm": 10.78, "ls": -9.75, "pt": 61.05, "lt": 55.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856719, "week": 7, "home": "Georgia", "away": "Auburn", "neutral": 0, "pm": 22.68, "ls": -19.5, "pt": 46.27, "lt": 49.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401864522, "week": 7, "home": "Wyoming", "away": "Northern Illinois", "neutral": 0, "pm": 5.99, "ls": -7.75, "pt": 43.81, "lt": 40.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401866478, "week": 7, "home": "Miami (OH)", "away": "Akron", "neutral": 0, "pm": 10.86, "ls": -9.75, "pt": 53.76, "lt": 46.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401864524, "week": 7, "home": "Air Force", "away": "UNLV", "neutral": 0, "pm": 0.55, "ls": -1.25, "pt": 54.4, "lt": 47.25, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401866444, "week": 7, "home": "Eastern Michigan", "away": "Toledo", "neutral": 0, "pm": -9.87, "ls": 5.25, "pt": 54.21, "lt": 52.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401862805, "week": 7, "home": "Rice", "away": "Tulsa", "neutral": 0, "pm": -5.46, "ls": 4.25, "pt": 46.38, "lt": 45.75, "kick": "2026-10-17T20:30:00.000Z", "hp": null, "ap": null}, {"id": 401869966, "week": 7, "home": "Louisiana", "away": "Troy", "neutral": 0, "pm": 5.4, "ls": -4.25, "pt": 53.88, "lt": 49.5, "kick": "2026-10-17T21:00:00.000Z", "hp": null, "ap": null}, {"id": 401860903, "week": 7, "home": "Oregon State", "away": "Washington State", "neutral": 0, "pm": 16.61, "ls": -18.25, "pt": 47.78, "lt": 53.5, "kick": "2026-10-17T22:00:00.000Z", "hp": null, "ap": null}, {"id": 401869934, "week": 7, "home": "Southern Miss", "away": "Arkansas State", "neutral": 0, "pm": 2.03, "ls": 7.0, "pt": 57.71, "lt": 61.0, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401858263, "week": 7, "home": "Miami", "away": "Florida State", "neutral": 0, "pm": 23.35, "ls": -21.0, "pt": 56.01, "lt": 56.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401862806, "week": 7, "home": "South Florida", "away": "Kent State", "neutral": 0, "pm": 24.23, "ls": -20.5, "pt": 47.99, "lt": 46.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401856832, "week": 7, "home": "Baylor", "away": "TCU", "neutral": 0, "pm": 8.67, "ls": -5.5, "pt": 50.19, "lt": 48.75, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401864520, "week": 7, "home": "North Dakota State", "away": "Nevada", "neutral": 0, "pm": 11.1, "ls": -15.75, "pt": 47.89, "lt": 45.75, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401856726, "week": 7, "home": "Vanderbilt", "away": "Arkansas", "neutral": 0, "pm": 5.22, "ls": -6.25, "pt": 55.09, "lt": 50.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401856722, "week": 7, "home": "Oklahoma", "away": "Kentucky", "neutral": 0, "pm": 9.22, "ls": -7.0, "pt": 46.2, "lt": 43.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401856831, "week": 7, "home": "Houston", "away": "Oklahoma State", "neutral": 0, "pm": 16.06, "ls": -4.25, "pt": 56.03, "lt": 61.25, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401858265, "week": 7, "home": "Syracuse", "away": "Louisville", "neutral": 0, "pm": -10.25, "ls": 13.5, "pt": 57.92, "lt": 56.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401858494, "week": 7, "home": "UCLA", "away": "Wisconsin", "neutral": 0, "pm": 4.23, "ls": -3.0, "pt": 46.64, "lt": 46.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401856809, "week": 7, "home": "BYU", "away": "Notre Dame", "neutral": 0, "pm": -15.48, "ls": 10.25, "pt": 48.31, "lt": 47.75, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401862804, "week": 7, "home": "UTSA", "away": "Navy", "neutral": 0, "pm": 8.99, "ls": -6.5, "pt": 50.27, "lt": 54.5, "kick": "2026-10-18T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401871091, "week": 7, "home": "UL Monroe", "away": "Louisiana Tech", "neutral": 0, "pm": -11.41, "ls": 14.75, "pt": 54.78, "lt": 56.25, "kick": "2026-10-18T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401864523, "week": 7, "home": "UTEP", "away": "San José State", "neutral": 0, "pm": -10.08, "ls": 8.0, "pt": 48.21, "lt": 48.5, "kick": "2026-10-18T01:00:00.000Z", "hp": null, "ap": null}, {"id": 401866445, "week": 7, "home": "Sacramento State", "away": "Ohio", "neutral": 0, "pm": -11.89, "ls": 14.5, "pt": 49.04, "lt": 49.5, "kick": "2026-10-18T02:00:00.000Z", "hp": null, "ap": null}, {"id": 401856833, "week": 7, "home": "Colorado", "away": "Utah", "neutral": 0, "pm": -17.07, "ls": 15.5, "pt": 49.27, "lt": 49.75, "kick": "2026-10-18T02:15:00.000Z", "hp": null, "ap": null}, {"id": 401864521, "week": 7, "home": "Hawai'i", "away": "New Mexico", "neutral": 0, "pm": -18.21, "ls": 14.25, "pt": 49.1, "lt": 46.0, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401860904, "week": 7, "home": "San Diego State", "away": "Fresno State", "neutral": 0, "pm": -1.08, "ls": 8.25, "pt": 44.87, "lt": 45.25, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401858269, "week": 7, "home": "California", "away": "Wake Forest", "neutral": 0, "pm": -16.15, "ls": 9.75, "pt": 53.18, "lt": 53.5, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401858492, "week": 7, "home": "Oregon", "away": "Nebraska", "neutral": 0, "pm": 6.16, "ls": -7.0, "pt": 54.4, "lt": 52.5, "kick": "2026-10-18T03:00:00.000Z", "hp": null, "ap": null}], "ratings": [{"team": "Notre Dame", "off": 13.2, "def": 9.41, "net": 22.62}, {"team": "Miami", "off": 10.32, "def": 10.65, "net": 20.97}, {"team": "Ohio State", "off": 10.33, "def": 9.99, "net": 20.32}, {"team": "Alabama", "off": 12.7, "def": 7.3, "net": 20.0}, {"team": "Indiana", "off": 8.3, "def": 11.66, "net": 19.96}, {"team": "Georgia", "off": 11.04, "def": 8.65, "net": 19.7}, {"team": "Utah", "off": 8.64, "def": 7.7, "net": 16.35}, {"team": "Texas Tech", "off": 8.37, "def": 7.25, "net": 15.62}, {"team": "Texas", "off": 4.89, "def": 9.09, "net": 13.98}, {"team": "LSU", "off": 5.52, "def": 7.13, "net": 12.65}, {"team": "Nebraska", "off": 7.69, "def": 4.1, "net": 11.78}, {"team": "Boise State", "off": 7.56, "def": 3.95, "net": 11.52}, {"team": "Missouri", "off": 3.83, "def": 7.64, "net": 11.48}, {"team": "Oregon", "off": 5.94, "def": 4.8, "net": 10.75}, {"team": "BYU", "off": 2.12, "def": 8.49, "net": 10.61}, {"team": "James Madison", "off": 4.74, "def": 5.69, "net": 10.42}, {"team": "New Mexico", "off": 4.55, "def": 5.74, "net": 10.29}, {"team": "Northwestern", "off": 4.46, "def": 5.45, "net": 9.9}, {"team": "UCLA", "off": 5.86, "def": 4.01, "net": 9.87}, {"team": "Ole Miss", "off": 8.95, "def": 0.59, "net": 9.54}, {"team": "Houston", "off": 5.19, "def": 4.34, "net": 9.53}, {"team": "Iowa", "off": 2.31, "def": 7.19, "net": 9.49}, {"team": "Arizona", "off": 6.46, "def": 3.0, "net": 9.46}, {"team": "Tennessee", "off": 5.62, "def": 3.77, "net": 9.39}, {"team": "Oklahoma", "off": 0.51, "def": 8.68, "net": 9.19}, {"team": "USC", "off": 8.19, "def": 0.98, "net": 9.17}, {"team": "Penn State", "off": 3.55, "def": 5.42, "net": 8.97}, {"team": "Wake Forest", "off": 4.97, "def": 4.0, "net": 8.96}, {"team": "Memphis", "off": 6.57, "def": 2.23, "net": 8.8}, {"team": "Wisconsin", "off": 1.0, "def": 6.47, "net": 7.47}, {"team": "Mississippi State", "off": 8.3, "def": -0.89, "net": 7.4}, {"team": "Texas A&M", "off": 3.1, "def": 4.25, "net": 7.35}, {"team": "South Carolina", "off": 4.43, "def": 1.84, "net": 6.27}, {"team": "North Texas", "off": 10.32, "def": -4.1, "net": 6.22}, {"team": "Liberty", "off": 1.7, "def": 4.37, "net": 6.07}, {"team": "North Dakota State", "off": 0.53, "def": 5.47, "net": 6.0}, {"team": "Oregon State", "off": 4.6, "def": 1.19, "net": 5.79}, {"team": "Louisville", "off": 5.41, "def": 0.15, "net": 5.57}, {"team": "Baylor", "off": 4.43, "def": 1.05, "net": 5.48}, {"team": "Pittsburgh", "off": 2.49, "def": 2.88, "net": 5.37}, {"team": "Florida", "off": 7.35, "def": -2.0, "net": 5.35}, {"team": "Iowa State", "off": 2.12, "def": 2.93, "net": 5.06}, {"team": "Kentucky", "off": 4.12, "def": 0.63, "net": 4.75}, {"team": "Michigan", "off": -0.56, "def": 4.88, "net": 4.31}, {"team": "Duke", "off": 1.23, "def": 3.06, "net": 4.29}, {"team": "Auburn", "off": -1.5, "def": 5.6, "net": 4.1}, {"team": "Florida State", "off": 3.81, "def": 0.2, "net": 4.01}, {"team": "South Florida", "off": -0.48, "def": 4.11, "net": 3.63}, {"team": "Fresno State", "off": 0.08, "def": 3.03, "net": 3.1}, {"team": "Kansas", "off": 2.94, "def": 0.01, "net": 2.95}, {"team": "SMU", "off": 2.16, "def": 0.6, "net": 2.76}, {"team": "Kansas State", "off": 1.62, "def": 0.3, "net": 1.92}, {"team": "TCU", "off": -3.14, "def": 4.88, "net": 1.74}, {"team": "Virginia", "off": -1.16, "def": 2.46, "net": 1.3}, {"team": "UNLV", "off": -1.19, "def": 2.44, "net": 1.26}, {"team": "UTSA", "off": 2.02, "def": -0.93, "net": 1.09}, {"team": "Illinois", "off": 2.92, "def": -1.98, "net": 0.94}, {"team": "Washington", "off": -0.49, "def": 1.38, "net": 0.88}, {"team": "North Carolina", "off": -2.32, "def": 2.95, "net": 0.63}, {"team": "Air Force", "off": 1.24, "def": -0.76, "net": 0.48}, {"team": "UCF", "off": -1.61, "def": 2.08, "net": 0.47}, {"team": "Western Michigan", "off": -4.25, "def": 4.69, "net": 0.44}, {"team": "Virginia Tech", "off": 1.22, "def": -0.96, "net": 0.27}, {"team": "Clemson", "off": -2.08, "def": 1.85, "net": -0.23}, {"team": "Purdue", "off": 2.47, "def": -2.83, "net": -0.36}, {"team": "Toledo", "off": 1.45, "def": -1.86, "net": -0.41}, {"team": "Vanderbilt", "off": 1.78, "def": -2.37, "net": -0.59}, {"team": "Army", "off": -2.53, "def": 1.86, "net": -0.67}, {"team": "Michigan State", "off": -2.38, "def": 1.38, "net": -1.0}, {"team": "Florida International", "off": -4.91, "def": 3.79, "net": -1.12}, {"team": "Cincinnati", "off": 0.04, "def": -1.19, "net": -1.15}, {"team": "Oklahoma State", "off": 0.3, "def": -1.53, "net": -1.23}, {"team": "Georgia State", "off": 1.58, "def": -2.86, "net": -1.28}, {"team": "UConn", "off": 1.76, "def": -3.12, "net": -1.36}, {"team": "Utah State", "off": -4.15, "def": 2.69, "net": -1.46}, {"team": "Tulane", "off": -5.18, "def": 3.69, "net": -1.49}, {"team": "East Carolina", "off": -2.0, "def": 0.5, "net": -1.5}, {"team": "Navy", "off": -1.91, "def": 0.28, "net": -1.62}, {"team": "Troy", "off": -1.32, "def": -0.7, "net": -2.03}, {"team": "Nevada", "off": -1.39, "def": -0.97, "net": -2.36}, {"team": "Arkansas", "off": -1.2, "def": -1.25, "net": -2.45}, {"team": "Louisiana", "off": -1.04, "def": -1.51, "net": -2.54}, {"team": "Ohio", "off": -1.78, "def": -1.06, "net": -2.84}, {"team": "Minnesota", "off": -3.77, "def": 0.68, "net": -3.1}, {"team": "Louisiana Tech", "off": 0.04, "def": -3.6, "net": -3.56}, {"team": "Texas State", "off": 3.07, "def": -6.86, "net": -3.79}, {"team": "South Alabama", "off": 5.45, "def": -9.29, "net": -3.84}, {"team": "Jacksonville State", "off": -2.3, "def": -1.56, "net": -3.86}, {"team": "Arizona State", "off": -2.03, "def": -1.85, "net": -3.87}, {"team": "NC State", "off": -0.05, "def": -3.97, "net": -4.02}, {"team": "Georgia Southern", "off": -0.71, "def": -3.42, "net": -4.13}, {"team": "Georgia Tech", "off": -1.22, "def": -3.02, "net": -4.24}, {"team": "Temple", "off": -2.04, "def": -2.64, "net": -4.67}, {"team": "Syracuse", "off": -2.38, "def": -2.29, "net": -4.67}, {"team": "Washington State", "off": -6.46, "def": 1.6, "net": -4.86}, {"team": "West Virginia", "off": 2.87, "def": -7.78, "net": -4.91}, {"team": "California", "off": -2.32, "def": -2.65, "net": -4.96}, {"team": "Florida Atlantic", "off": 0.91, "def": -5.93, "net": -5.02}, {"team": "Tulsa", "off": -3.01, "def": -2.01, "net": -5.02}, {"team": "Colorado", "off": -6.88, "def": 1.66, "net": -5.23}, {"team": "Buffalo", "off": -3.51, "def": -1.95, "net": -5.46}, {"team": "Maryland", "off": -1.71, "def": -4.16, "net": -5.87}, {"team": "Old Dominion", "off": -5.12, "def": -1.24, "net": -6.35}, {"team": "Kennesaw State", "off": -4.98, "def": -1.37, "net": -6.35}, {"team": "San José State", "off": -4.65, "def": -1.79, "net": -6.45}, {"team": "Central Michigan", "off": -4.55, "def": -2.23, "net": -6.78}, {"team": "Arkansas State", "off": -3.19, "def": -3.74, "net": -6.94}, {"team": "Boston College", "off": -6.12, "def": -0.95, "net": -7.07}, {"team": "San Diego State", "off": -5.28, "def": -2.06, "net": -7.35}, {"team": "Miami (OH)", "off": -3.55, "def": -3.93, "net": -7.47}, {"team": "App State", "off": -4.51, "def": -3.02, "net": -7.52}, {"team": "Wyoming", "off": -10.24, "def": 2.58, "net": -7.66}, {"team": "New Mexico State", "off": -5.53, "def": -2.45, "net": -7.98}, {"team": "Colorado State", "off": 2.21, "def": -10.3, "net": -8.09}, {"team": "UAB", "off": -5.16, "def": -3.03, "net": -8.19}, {"team": "Rutgers", "off": -0.57, "def": -7.93, "net": -8.5}, {"team": "Coastal Carolina", "off": -5.16, "def": -3.55, "net": -8.71}, {"team": "Hawai'i", "off": -6.22, "def": -2.86, "net": -9.08}, {"team": "Eastern Michigan", "off": -4.12, "def": -5.13, "net": -9.25}, {"team": "Delaware", "off": -4.7, "def": -4.73, "net": -9.43}, {"team": "Marshall", "off": -3.5, "def": -6.15, "net": -9.66}, {"team": "Rice", "off": -6.75, "def": -3.38, "net": -10.13}, {"team": "Bowling Green", "off": -6.85, "def": -3.3, "net": -10.15}, {"team": "Western Kentucky", "off": -3.43, "def": -6.88, "net": -10.31}, {"team": "Massachusetts", "off": -6.95, "def": -3.68, "net": -10.64}, {"team": "Southern Miss", "off": -1.51, "def": -9.15, "net": -10.66}, {"team": "Middle Tennessee", "off": -6.51, "def": -4.16, "net": -10.67}, {"team": "Sam Houston", "off": -6.71, "def": -4.71, "net": -11.42}, {"team": "Missouri State", "off": -6.63, "def": -5.87, "net": -12.5}, {"team": "Stanford", "off": -5.31, "def": -7.23, "net": -12.54}, {"team": "Northern Illinois", "off": -9.28, "def": -3.37, "net": -12.65}, {"team": "Akron", "off": -7.96, "def": -8.1, "net": -16.06}, {"team": "Ball State", "off": -7.36, "def": -8.91, "net": -16.27}, {"team": "Sacramento State", "off": -9.49, "def": -7.23, "net": -16.72}, {"team": "Kent State", "off": -9.24, "def": -7.48, "net": -16.73}, {"team": "UL Monroe", "off": -6.96, "def": -10.34, "net": -17.3}, {"team": "UTEP", "off": -8.66, "def": -11.08, "net": -19.73}, {"team": "Charlotte", "off": -11.74, "def": -8.19, "net": -19.93}], "ratingsWeek": 7, "built": "Mon Oct 12, 4:03 AM"};
+var D = {"games": [{"id": 401871067, "week": 7, "home": "Middle Tennessee", "away": "Delaware", "neutral": 0, "pm": 0.37, "ls": 2.5, "pt": 51.04, "lt": 47.5, "kick": "2026-10-13T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401871053, "week": 7, "home": "Jacksonville State", "away": "Florida International", "neutral": 0, "pm": 0.45, "ls": -3.0, "pt": 45.88, "lt": 43.5, "kick": "2026-10-14T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401871054, "week": 7, "home": "Missouri State", "away": "Kennesaw State", "neutral": 0, "pm": -0.86, "ls": 3.0, "pt": 50.41, "lt": 51.5, "kick": "2026-10-14T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401871068, "week": 7, "home": "Sam Houston", "away": "Western Kentucky", "neutral": 0, "pm": 1.02, "ls": 1.25, "pt": 56.21, "lt": 52.75, "kick": "2026-10-15T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401869950, "week": 7, "home": "Old Dominion", "away": "Georgia Southern", "neutral": 0, "pm": -1.89, "ls": 3.75, "pt": 51.49, "lt": 46.75, "kick": "2026-10-15T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401862800, "week": 7, "home": "UAB", "away": "East Carolina", "neutral": 0, "pm": -1.83, "ls": 4.5, "pt": 48.74, "lt": 48.75, "kick": "2026-10-15T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401860923, "week": 7, "home": "Texas State", "away": "Colorado State", "neutral": 0, "pm": 16.15, "ls": -13.25, "pt": 68.4, "lt": 68.5, "kick": "2026-10-16T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401862801, "week": 7, "home": "Tulane", "away": "Memphis", "neutral": 0, "pm": -5.3, "ls": 6.75, "pt": 53.85, "lt": 53.5, "kick": "2026-10-16T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401869844, "week": 7, "home": "Coastal Carolina", "away": "App State", "neutral": 0, "pm": -0.83, "ls": 1.25, "pt": 52.13, "lt": 51.75, "kick": "2026-10-17T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401858493, "week": 7, "home": "Purdue", "away": "Washington", "neutral": 0, "pm": -2.72, "ls": -3.0, "pt": 57.46, "lt": 52.5, "kick": "2026-10-17T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401856830, "week": 7, "home": "Kansas State", "away": "Kansas", "neutral": 0, "pm": -4.13, "ls": -6.25, "pt": 56.85, "lt": 55.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401866441, "week": 7, "home": "Bowling Green", "away": "Ball State", "neutral": 0, "pm": 3.46, "ls": -7.25, "pt": 50.05, "lt": 44.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858268, "week": 7, "home": "SMU", "away": "Virginia", "neutral": 0, "pm": 6.69, "ls": -8.75, "pt": 51.21, "lt": 52.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858488, "week": 7, "home": "Indiana", "away": "Ohio State", "neutral": 0, "pm": -4.35, "ls": 3.5, "pt": 49.32, "lt": 50.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858267, "week": 7, "home": "Boston College", "away": "Pittsburgh", "neutral": 0, "pm": -12.34, "ls": 6.25, "pt": 47.82, "lt": 44.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401862802, "week": 7, "home": "Army", "away": "Florida Atlantic", "neutral": 0, "pm": 0.65, "ls": -2.75, "pt": 54.25, "lt": 56.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858491, "week": 7, "home": "Michigan State", "away": "Northwestern", "neutral": 0, "pm": -8.35, "ls": 7.5, "pt": 54.31, "lt": 48.5, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401869957, "week": 7, "home": "James Madison", "away": "Georgia State", "neutral": 0, "pm": 12.64, "ls": -11.75, "pt": 56.48, "lt": 58.25, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856829, "week": 7, "home": "West Virginia", "away": "Cincinnati", "neutral": 0, "pm": 2.11, "ls": -2.5, "pt": 61.57, "lt": 63.0, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856720, "week": 7, "home": "LSU", "away": "Mississippi State", "neutral": 0, "pm": 13.48, "ls": -11.75, "pt": 53.26, "lt": 58.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401856724, "week": 7, "home": "Texas", "away": "Florida", "neutral": 0, "pm": 13.81, "ls": -10.0, "pt": 51.76, "lt": 52.75, "kick": "2026-10-17T16:00:00.000Z", "hp": null, "ap": null}, {"id": 401858489, "week": 7, "home": "Maryland", "away": "Rutgers", "neutral": 0, "pm": 6.44, "ls": -4.5, "pt": 58.83, "lt": 58.25, "kick": "2026-10-17T16:30:00.000Z", "hp": null, "ap": null}, {"id": 401866442, "week": 7, "home": "Buffalo", "away": "Massachusetts", "neutral": 0, "pm": 6.16, "ls": -3.25, "pt": 47.77, "lt": 42.75, "kick": "2026-10-17T17:00:00.000Z", "hp": null, "ap": null}, {"id": 401862803, "week": 7, "home": "Temple", "away": "Charlotte", "neutral": 0, "pm": 22.07, "ls": -21.25, "pt": 47.61, "lt": 49.5, "kick": "2026-10-17T17:00:00.000Z", "hp": null, "ap": null}, {"id": 401866443, "week": 7, "home": "Central Michigan", "away": "Western Michigan", "neutral": 0, "pm": -10.06, "ls": 7.0, "pt": 43.64, "lt": 42.75, "kick": "2026-10-17T17:30:00.000Z", "hp": null, "ap": null}, {"id": 401856721, "week": 7, "home": "Ole Miss", "away": "Missouri", "neutral": 0, "pm": 1.55, "ls": -6.0, "pt": 55.56, "lt": 59.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401866444, "week": 7, "home": "Eastern Michigan", "away": "Toledo", "neutral": 0, "pm": -9.87, "ls": 5.25, "pt": 54.21, "lt": 52.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401864524, "week": 7, "home": "Air Force", "away": "UNLV", "neutral": 0, "pm": 0.55, "ls": -1.25, "pt": 54.4, "lt": 47.25, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401866478, "week": 7, "home": "Miami (OH)", "away": "Akron", "neutral": 0, "pm": 10.86, "ls": -9.75, "pt": 53.76, "lt": 46.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856719, "week": 7, "home": "Georgia", "away": "Auburn", "neutral": 0, "pm": 22.68, "ls": -19.5, "pt": 46.27, "lt": 49.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856828, "week": 7, "home": "Texas Tech", "away": "Arizona State", "neutral": 0, "pm": 21.21, "ls": -14.5, "pt": 51.24, "lt": 48.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401858490, "week": 7, "home": "Michigan", "away": "Penn State", "neutral": 0, "pm": 6.79, "ls": -5.75, "pt": 47.31, "lt": 42.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401864522, "week": 7, "home": "Wyoming", "away": "Northern Illinois", "neutral": 0, "pm": 5.99, "ls": -7.75, "pt": 43.81, "lt": 40.75, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401858264, "week": 7, "home": "Virginia Tech", "away": "Georgia Tech", "neutral": 0, "pm": 10.78, "ls": -9.75, "pt": 61.05, "lt": 55.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401856723, "week": 7, "home": "Tennessee", "away": "Alabama", "neutral": 0, "pm": -14.02, "ls": 7.5, "pt": 54.28, "lt": 53.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401858266, "week": 7, "home": "Duke", "away": "North Carolina", "neutral": 0, "pm": 3.95, "ls": -3.5, "pt": 50.89, "lt": 47.5, "kick": "2026-10-17T19:30:00.000Z", "hp": null, "ap": null}, {"id": 401862805, "week": 7, "home": "Rice", "away": "Tulsa", "neutral": 0, "pm": -5.46, "ls": 4.25, "pt": 46.38, "lt": 45.75, "kick": "2026-10-17T20:30:00.000Z", "hp": null, "ap": null}, {"id": 401869966, "week": 7, "home": "Louisiana", "away": "Troy", "neutral": 0, "pm": 5.4, "ls": -4.25, "pt": 53.88, "lt": 49.5, "kick": "2026-10-17T21:00:00.000Z", "hp": null, "ap": null}, {"id": 401860903, "week": 7, "home": "Oregon State", "away": "Washington State", "neutral": 0, "pm": 16.61, "ls": -18.25, "pt": 47.78, "lt": 53.5, "kick": "2026-10-17T22:00:00.000Z", "hp": null, "ap": null}, {"id": 401862806, "week": 7, "home": "South Florida", "away": "Kent State", "neutral": 0, "pm": 24.23, "ls": -20.5, "pt": 47.99, "lt": 46.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401856726, "week": 7, "home": "Vanderbilt", "away": "Arkansas", "neutral": 0, "pm": 5.22, "ls": -6.25, "pt": 55.09, "lt": 50.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401864520, "week": 7, "home": "North Dakota State", "away": "Nevada", "neutral": 0, "pm": 11.1, "ls": -15.75, "pt": 47.89, "lt": 45.75, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401869934, "week": 7, "home": "Southern Miss", "away": "Arkansas State", "neutral": 0, "pm": 2.03, "ls": 7.0, "pt": 57.71, "lt": 61.0, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401858263, "week": 7, "home": "Miami", "away": "Florida State", "neutral": 0, "pm": 23.35, "ls": -21.0, "pt": 56.01, "lt": 56.5, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401856832, "week": 7, "home": "Baylor", "away": "TCU", "neutral": 0, "pm": 8.67, "ls": -5.5, "pt": 50.19, "lt": 48.75, "kick": "2026-10-17T23:00:00.000Z", "hp": null, "ap": null}, {"id": 401858494, "week": 7, "home": "UCLA", "away": "Wisconsin", "neutral": 0, "pm": 4.23, "ls": -3.0, "pt": 46.64, "lt": 46.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401856809, "week": 7, "home": "BYU", "away": "Notre Dame", "neutral": 0, "pm": -15.48, "ls": 10.25, "pt": 48.31, "lt": 47.75, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401856722, "week": 7, "home": "Oklahoma", "away": "Kentucky", "neutral": 0, "pm": 9.22, "ls": -7.0, "pt": 46.2, "lt": 43.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401856831, "week": 7, "home": "Houston", "away": "Oklahoma State", "neutral": 0, "pm": 16.06, "ls": -4.25, "pt": 56.03, "lt": 61.25, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401858265, "week": 7, "home": "Syracuse", "away": "Louisville", "neutral": 0, "pm": -10.25, "ls": 13.5, "pt": 57.92, "lt": 56.5, "kick": "2026-10-17T23:30:00.000Z", "hp": null, "ap": null}, {"id": 401862804, "week": 7, "home": "UTSA", "away": "Navy", "neutral": 0, "pm": 8.99, "ls": -6.5, "pt": 50.27, "lt": 54.5, "kick": "2026-10-18T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401871091, "week": 7, "home": "UL Monroe", "away": "Louisiana Tech", "neutral": 0, "pm": -11.41, "ls": 14.75, "pt": 54.78, "lt": 56.25, "kick": "2026-10-18T00:00:00.000Z", "hp": null, "ap": null}, {"id": 401864523, "week": 7, "home": "UTEP", "away": "San José State", "neutral": 0, "pm": -10.08, "ls": 8.0, "pt": 48.21, "lt": 48.5, "kick": "2026-10-18T01:00:00.000Z", "hp": null, "ap": null}, {"id": 401866445, "week": 7, "home": "Sacramento State", "away": "Ohio", "neutral": 0, "pm": -11.89, "ls": 14.5, "pt": 49.04, "lt": 49.5, "kick": "2026-10-18T02:00:00.000Z", "hp": null, "ap": null}, {"id": 401856833, "week": 7, "home": "Colorado", "away": "Utah", "neutral": 0, "pm": -17.07, "ls": 15.5, "pt": 49.27, "lt": 49.75, "kick": "2026-10-18T02:15:00.000Z", "hp": null, "ap": null}, {"id": 401860904, "week": 7, "home": "San Diego State", "away": "Fresno State", "neutral": 0, "pm": -1.08, "ls": 8.25, "pt": 44.87, "lt": 45.25, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401864521, "week": 7, "home": "Hawai'i", "away": "New Mexico", "neutral": 0, "pm": -18.21, "ls": 14.25, "pt": 49.1, "lt": 46.0, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401858269, "week": 7, "home": "California", "away": "Wake Forest", "neutral": 0, "pm": -16.15, "ls": 9.75, "pt": 53.18, "lt": 53.5, "kick": "2026-10-18T02:30:00.000Z", "hp": null, "ap": null}, {"id": 401858492, "week": 7, "home": "Oregon", "away": "Nebraska", "neutral": 0, "pm": 6.16, "ls": -7.0, "pt": 54.4, "lt": 52.5, "kick": "2026-10-18T03:00:00.000Z", "hp": null, "ap": null}], "ratings": [{"team": "Notre Dame", "off": 13.2, "def": 9.41, "net": 22.62}, {"team": "Miami", "off": 10.32, "def": 10.65, "net": 20.97}, {"team": "Ohio State", "off": 10.33, "def": 9.99, "net": 20.32}, {"team": "Alabama", "off": 12.7, "def": 7.3, "net": 20.0}, {"team": "Indiana", "off": 8.3, "def": 11.66, "net": 19.96}, {"team": "Georgia", "off": 11.04, "def": 8.65, "net": 19.7}, {"team": "Utah", "off": 8.64, "def": 7.7, "net": 16.35}, {"team": "Texas Tech", "off": 8.37, "def": 7.25, "net": 15.62}, {"team": "Texas", "off": 4.89, "def": 9.09, "net": 13.98}, {"team": "LSU", "off": 5.52, "def": 7.13, "net": 12.65}, {"team": "Nebraska", "off": 7.69, "def": 4.1, "net": 11.78}, {"team": "Boise State", "off": 7.56, "def": 3.95, "net": 11.52}, {"team": "Missouri", "off": 3.83, "def": 7.64, "net": 11.48}, {"team": "Oregon", "off": 5.94, "def": 4.8, "net": 10.75}, {"team": "BYU", "off": 2.12, "def": 8.49, "net": 10.61}, {"team": "James Madison", "off": 4.74, "def": 5.69, "net": 10.42}, {"team": "New Mexico", "off": 4.55, "def": 5.74, "net": 10.29}, {"team": "Northwestern", "off": 4.46, "def": 5.45, "net": 9.9}, {"team": "UCLA", "off": 5.86, "def": 4.01, "net": 9.87}, {"team": "Ole Miss", "off": 8.95, "def": 0.59, "net": 9.54}, {"team": "Houston", "off": 5.19, "def": 4.34, "net": 9.53}, {"team": "Iowa", "off": 2.31, "def": 7.19, "net": 9.49}, {"team": "Arizona", "off": 6.46, "def": 3.0, "net": 9.46}, {"team": "Tennessee", "off": 5.62, "def": 3.77, "net": 9.39}, {"team": "Oklahoma", "off": 0.51, "def": 8.68, "net": 9.19}, {"team": "USC", "off": 8.19, "def": 0.98, "net": 9.17}, {"team": "Penn State", "off": 3.55, "def": 5.42, "net": 8.97}, {"team": "Wake Forest", "off": 4.97, "def": 4.0, "net": 8.96}, {"team": "Memphis", "off": 6.57, "def": 2.23, "net": 8.8}, {"team": "Wisconsin", "off": 1.0, "def": 6.47, "net": 7.47}, {"team": "Mississippi State", "off": 8.3, "def": -0.89, "net": 7.4}, {"team": "Texas A&M", "off": 3.1, "def": 4.25, "net": 7.35}, {"team": "South Carolina", "off": 4.43, "def": 1.84, "net": 6.27}, {"team": "North Texas", "off": 10.32, "def": -4.1, "net": 6.22}, {"team": "Liberty", "off": 1.7, "def": 4.37, "net": 6.07}, {"team": "North Dakota State", "off": 0.53, "def": 5.47, "net": 6.0}, {"team": "Oregon State", "off": 4.6, "def": 1.19, "net": 5.79}, {"team": "Louisville", "off": 5.41, "def": 0.15, "net": 5.57}, {"team": "Baylor", "off": 4.43, "def": 1.05, "net": 5.48}, {"team": "Pittsburgh", "off": 2.49, "def": 2.88, "net": 5.37}, {"team": "Florida", "off": 7.35, "def": -2.0, "net": 5.35}, {"team": "Iowa State", "off": 2.12, "def": 2.93, "net": 5.06}, {"team": "Kentucky", "off": 4.12, "def": 0.63, "net": 4.75}, {"team": "Michigan", "off": -0.56, "def": 4.88, "net": 4.31}, {"team": "Duke", "off": 1.23, "def": 3.06, "net": 4.29}, {"team": "Auburn", "off": -1.5, "def": 5.6, "net": 4.1}, {"team": "Florida State", "off": 3.81, "def": 0.2, "net": 4.01}, {"team": "South Florida", "off": -0.48, "def": 4.11, "net": 3.63}, {"team": "Fresno State", "off": 0.08, "def": 3.03, "net": 3.1}, {"team": "Kansas", "off": 2.94, "def": 0.01, "net": 2.95}, {"team": "SMU", "off": 2.16, "def": 0.6, "net": 2.76}, {"team": "Kansas State", "off": 1.62, "def": 0.3, "net": 1.92}, {"team": "TCU", "off": -3.14, "def": 4.88, "net": 1.74}, {"team": "Virginia", "off": -1.16, "def": 2.46, "net": 1.3}, {"team": "UNLV", "off": -1.19, "def": 2.44, "net": 1.26}, {"team": "UTSA", "off": 2.02, "def": -0.93, "net": 1.09}, {"team": "Illinois", "off": 2.92, "def": -1.98, "net": 0.94}, {"team": "Washington", "off": -0.49, "def": 1.38, "net": 0.88}, {"team": "North Carolina", "off": -2.32, "def": 2.95, "net": 0.63}, {"team": "Air Force", "off": 1.24, "def": -0.76, "net": 0.48}, {"team": "UCF", "off": -1.61, "def": 2.08, "net": 0.47}, {"team": "Western Michigan", "off": -4.25, "def": 4.69, "net": 0.44}, {"team": "Virginia Tech", "off": 1.22, "def": -0.96, "net": 0.27}, {"team": "Clemson", "off": -2.08, "def": 1.85, "net": -0.23}, {"team": "Purdue", "off": 2.47, "def": -2.83, "net": -0.36}, {"team": "Toledo", "off": 1.45, "def": -1.86, "net": -0.41}, {"team": "Vanderbilt", "off": 1.78, "def": -2.37, "net": -0.59}, {"team": "Army", "off": -2.53, "def": 1.86, "net": -0.67}, {"team": "Michigan State", "off": -2.38, "def": 1.38, "net": -1.0}, {"team": "Florida International", "off": -4.91, "def": 3.79, "net": -1.12}, {"team": "Cincinnati", "off": 0.04, "def": -1.19, "net": -1.15}, {"team": "Oklahoma State", "off": 0.3, "def": -1.53, "net": -1.23}, {"team": "Georgia State", "off": 1.58, "def": -2.86, "net": -1.28}, {"team": "UConn", "off": 1.76, "def": -3.12, "net": -1.36}, {"team": "Utah State", "off": -4.15, "def": 2.69, "net": -1.46}, {"team": "Tulane", "off": -5.18, "def": 3.69, "net": -1.49}, {"team": "East Carolina", "off": -2.0, "def": 0.5, "net": -1.5}, {"team": "Navy", "off": -1.91, "def": 0.28, "net": -1.62}, {"team": "Troy", "off": -1.32, "def": -0.7, "net": -2.03}, {"team": "Nevada", "off": -1.39, "def": -0.97, "net": -2.36}, {"team": "Arkansas", "off": -1.2, "def": -1.25, "net": -2.45}, {"team": "Louisiana", "off": -1.04, "def": -1.51, "net": -2.54}, {"team": "Ohio", "off": -1.78, "def": -1.06, "net": -2.84}, {"team": "Minnesota", "off": -3.77, "def": 0.68, "net": -3.1}, {"team": "Louisiana Tech", "off": 0.04, "def": -3.6, "net": -3.56}, {"team": "Texas State", "off": 3.07, "def": -6.86, "net": -3.79}, {"team": "South Alabama", "off": 5.45, "def": -9.29, "net": -3.84}, {"team": "Jacksonville State", "off": -2.3, "def": -1.56, "net": -3.86}, {"team": "Arizona State", "off": -2.03, "def": -1.85, "net": -3.87}, {"team": "NC State", "off": -0.05, "def": -3.97, "net": -4.02}, {"team": "Georgia Southern", "off": -0.71, "def": -3.42, "net": -4.13}, {"team": "Georgia Tech", "off": -1.22, "def": -3.02, "net": -4.24}, {"team": "Temple", "off": -2.04, "def": -2.64, "net": -4.67}, {"team": "Syracuse", "off": -2.38, "def": -2.29, "net": -4.67}, {"team": "Washington State", "off": -6.46, "def": 1.6, "net": -4.86}, {"team": "West Virginia", "off": 2.87, "def": -7.78, "net": -4.91}, {"team": "California", "off": -2.32, "def": -2.65, "net": -4.96}, {"team": "Florida Atlantic", "off": 0.91, "def": -5.93, "net": -5.02}, {"team": "Tulsa", "off": -3.01, "def": -2.01, "net": -5.02}, {"team": "Colorado", "off": -6.88, "def": 1.66, "net": -5.23}, {"team": "Buffalo", "off": -3.51, "def": -1.95, "net": -5.46}, {"team": "Maryland", "off": -1.71, "def": -4.16, "net": -5.87}, {"team": "Old Dominion", "off": -5.12, "def": -1.24, "net": -6.35}, {"team": "Kennesaw State", "off": -4.98, "def": -1.37, "net": -6.35}, {"team": "San José State", "off": -4.65, "def": -1.79, "net": -6.45}, {"team": "Central Michigan", "off": -4.55, "def": -2.23, "net": -6.78}, {"team": "Arkansas State", "off": -3.19, "def": -3.74, "net": -6.94}, {"team": "Boston College", "off": -6.12, "def": -0.95, "net": -7.07}, {"team": "San Diego State", "off": -5.28, "def": -2.06, "net": -7.35}, {"team": "Miami (OH)", "off": -3.55, "def": -3.93, "net": -7.47}, {"team": "App State", "off": -4.51, "def": -3.02, "net": -7.52}, {"team": "Wyoming", "off": -10.24, "def": 2.58, "net": -7.66}, {"team": "New Mexico State", "off": -5.53, "def": -2.45, "net": -7.98}, {"team": "Colorado State", "off": 2.21, "def": -10.3, "net": -8.09}, {"team": "UAB", "off": -5.16, "def": -3.03, "net": -8.19}, {"team": "Rutgers", "off": -0.57, "def": -7.93, "net": -8.5}, {"team": "Coastal Carolina", "off": -5.16, "def": -3.55, "net": -8.71}, {"team": "Hawai'i", "off": -6.22, "def": -2.86, "net": -9.08}, {"team": "Eastern Michigan", "off": -4.12, "def": -5.13, "net": -9.25}, {"team": "Delaware", "off": -4.7, "def": -4.73, "net": -9.43}, {"team": "Marshall", "off": -3.5, "def": -6.15, "net": -9.66}, {"team": "Rice", "off": -6.75, "def": -3.38, "net": -10.13}, {"team": "Bowling Green", "off": -6.85, "def": -3.3, "net": -10.15}, {"team": "Western Kentucky", "off": -3.43, "def": -6.88, "net": -10.31}, {"team": "Massachusetts", "off": -6.95, "def": -3.68, "net": -10.64}, {"team": "Southern Miss", "off": -1.51, "def": -9.15, "net": -10.66}, {"team": "Middle Tennessee", "off": -6.51, "def": -4.16, "net": -10.67}, {"team": "Sam Houston", "off": -6.71, "def": -4.71, "net": -11.42}, {"team": "Missouri State", "off": -6.63, "def": -5.87, "net": -12.5}, {"team": "Stanford", "off": -5.31, "def": -7.23, "net": -12.54}, {"team": "Northern Illinois", "off": -9.28, "def": -3.37, "net": -12.65}, {"team": "Akron", "off": -7.96, "def": -8.1, "net": -16.06}, {"team": "Ball State", "off": -7.36, "def": -8.91, "net": -16.27}, {"team": "Sacramento State", "off": -9.49, "def": -7.23, "net": -16.72}, {"team": "Kent State", "off": -9.24, "def": -7.48, "net": -16.73}, {"team": "UL Monroe", "off": -6.96, "def": -10.34, "net": -17.3}, {"team": "UTEP", "off": -8.66, "def": -11.08, "net": -19.73}, {"team": "Charlotte", "off": -11.74, "def": -8.19, "net": -19.93}], "ratingsWeek": 7, "built": "Mon Oct 12, 4:12 AM"};
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, function (c) {
@@ -240,17 +281,20 @@ function render() {
 window.addEventListener("hashchange", function () { parseHash(); render(); });
 
 /* ---------- games ---------- */
-var AX = 30, W = 200, H = 26;
+var AX = 30, W = 220, H = 28;
 function px(v) { var c = Math.max(-AX, Math.min(AX, v)); return 8 + (c + AX) / (2 * AX) * (W - 16); }
 function bell(r) {
   if (r.m === null || r.k === null) return "";
-  var y = H / 2, x1 = px(r.k), x2 = px(r.m);
+  var y = H / 2, x1 = px(r.k), x2 = px(r.m), t = "";
+  for (var v = -30; v <= 30; v += 10) {
+    t += '<line class="' + (v === 0 ? "mid" : "tick") + '" x1="' + px(v) + '" y1="' + (v === 0 ? 3 : 8) + '" x2="' + px(v) + '" y2="' + (v === 0 ? H - 3 : H - 8) + '"/>';
+  }
   var label = "Market: " + plainFav(r.k, r.home, r.away) + ". Model: " + plainFav(r.m, r.home, r.away) + ".";
   return '<svg class="bell" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="' + esc(label) + '">' +
-    '<line class="axis" x1="' + px(0) + '" y1="3" x2="' + px(0) + '" y2="' + (H - 3) + '"/>' +
+    '<rect class="turf" x="0.5" y="0.5" width="' + (W - 1) + '" height="' + (H - 1) + '" rx="6"/>' + t +
     '<line class="link" x1="' + x1 + '" y1="' + y + '" x2="' + x2 + '" y2="' + y + '"/>' +
-    '<circle class="mk" cx="' + x1 + '" cy="' + y + '" r="5"/>' +
-    '<circle class="md" cx="' + x2 + '" cy="' + y + '" r="5"/></svg>';
+    '<circle class="mk" cx="' + x1 + '" cy="' + y + '" r="5.5"/>' +
+    '<circle class="md" cx="' + x2 + '" cy="' + y + '" r="5.5"/></svg>';
 }
 function absKey(v) { return v === null ? -1 : Math.abs(v); }
 function scoreText(r) {
@@ -258,6 +302,23 @@ function scoreText(r) {
   return r.hp >= r.ap ? h + ", " + a : a + ", " + h;
 }
 
+function summary(list) {
+  var flagged = 0, sum = 0, n = 0, big = null;
+  list.forEach(function (r) {
+    if (r.gap === null) return;
+    var a = Math.abs(r.gap);
+    sum += a; n++;
+    if (a >= 5 && !r.done) flagged++;
+    if (!big || a > Math.abs(big.gap)) big = r;
+  });
+  var items = [
+    ["Games", String(list.length)],
+    ["Average spread gap", n ? f1(sum / n) + " pts" : "-"],
+    ["Biggest gap", big ? esc(big.gap > 0 ? big.home : big.away) + ", " + f1(Math.abs(big.gap)) + " pts" : "-"],
+    ["Flagged: check news", String(flagged)]
+  ];
+  return '<dl class="keys">' + items.map(function (it) { return "<div><dt>" + it[0] + "</dt><dd>" + it[1] + "</dd></div>"; }).join("") + "</dl>";
+}
 function buildGames(el) {
   if (!WEEKS.length) {
     el.innerHTML = '<div class="empty"><h2>No predictions yet</h2><p>Predictions appear after the first scheduled run. To make them now, double-click weekly_auto.bat in the cfb_model folder.</p></div>';
@@ -288,11 +349,11 @@ function buildGames(el) {
   h += '<p class="legend"><span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" fill="none" stroke="var(--market)" stroke-width="2.5"/></svg>Market</span>' +
        '<span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5.5" fill="var(--model)"/></svg>Model</span>' +
        '<span>Spreads are shown for the favorite. A gap of 5+ points usually means news the model can\'t see.</span></p>';
-  h += '<div class="scroll"><table><caption class="sr">Model and market for the selected week</caption><thead><tr>' +
+  h += summary(list) + '<div class="panel cards"><div class="scroll"><table><caption class="sr">Model and market for the selected week</caption><thead><tr>' +
        '<th>Game</th><th class="num">Market</th><th class="num">Model</th>' +
-       '<th><div class="scale" style="width:200px"><span>Away favored</span><span>Home favored</span></div></th>' +
+       '<th><div class="scale" style="width:220px"><span>Away favored</span><span>Home favored</span></div></th>' +
        '<th>Model leans</th><th class="num">Totals: market / model</th>' +
-       '</tr></thead><tbody id="tb"></tbody></table></div><p class="count" id="cnt"></p>';
+       '</tr></thead><tbody id="tb"></tbody></table></div></div><p class="count" id="cnt"></p>';
   el.innerHTML = h;
 
   document.getElementById("wsel").addEventListener("change", function (e) { state.week = Number(e.target.value); setHash(); buildGames(el); });
@@ -351,11 +412,11 @@ function drawRows(all) {
     if (r.done && r.neutral) subline += ". Neutral site";
     return "<tr>" +
       '<td class="game">' + esc(r.away) + " at " + esc(r.home) + (subline ? "<small>" + subline + "</small>" : "") + "</td>" +
-      '<td class="num">' + favText(r.k, r.home, r.away) + "</td>" +
-      '<td class="num">' + favText(r.m, r.home, r.away) + "</td>" +
-      "<td>" + bell(r) + "</td>" +
-      '<td class="lean">' + lean + "</td>" +
-      '<td class="num">' + (r.lt === null ? "-" : f1(r.lt)) + " / " + (r.pt === null ? "-" : f1(r.pt)) + '<div class="tl">' + tl + "</div></td></tr>";
+      '<td class="num" data-l="Market">' + favText(r.k, r.home, r.away) + "</td>" +
+      '<td class="num" data-l="Model">' + favText(r.m, r.home, r.away) + "</td>" +
+      '<td class="strip">' + bell(r) + "</td>" +
+      '<td class="lean" data-l="Model leans">' + lean + "</td>" +
+      '<td class="num tot" data-l="Totals: market / model">' + (r.lt === null ? "-" : f1(r.lt)) + " / " + (r.pt === null ? "-" : f1(r.pt)) + '<div class="tl">' + tl + "</div></td></tr>";
   }).join("");
   document.getElementById("tb").innerHTML = html || '<tr><td colspan="6" class="muted">No games match.</td></tr>';
   var graded = all.filter(function (g) { return g.done; }).length;
@@ -454,7 +515,13 @@ function buildSeason(el) {
   var sEdge = function (r) { return r.gap; };
   var tEdge = function (r) { return r.tgap; };
 
-  var h = '<div class="block"><h2>How close the numbers are</h2>' +
+  var wset = {};
+  S.forEach(function (r) { wset[r.week] = 1; });
+  var wn = Object.keys(wset).length;
+  var h = '<p class="verdict">Through ' + S.length + ' graded games over ' + wn + (wn === 1 ? ' week' : ' weeks') +
+    ', the model missed spreads by ' + (spr.length ? f1(mS) : '-') + ' points on average and the market by ' + (spr.length ? f1(kS) : '-') + '. ' +
+    (spr.length ? (mS < kS ? 'The model is slightly closer so far.' : 'The market is closer so far.') : '') + (S.length < 150 ? ' That is a small sample, so it is too early to read much into it.' : '') + '</p>' +
+    '<div class="block"><h2>How close the numbers are</h2>' +
     "<p>Average miss in points across " + S.length + " graded games. Lower is better, and the market is the number to beat.</p>" +
     '<div class="cols">' +
     (spr.length ? missBars(mS, kS, "Spreads", spr.length + " games with a line") : "") +
@@ -472,7 +539,7 @@ function buildSeason(el) {
   var weeks = {};
   S.forEach(function (r) { (weeks[r.week] = weeks[r.week] || []).push(r); });
   var wk = Object.keys(weeks).map(Number).sort(function (a, b) { return b - a; });
-  h += '<div class="block"><h2>Week by week</h2><div class="scroll"><table><thead><tr><th>Week</th><th class="num">Games</th>' +
+  h += '<div class="block"><h2>Week by week</h2><div class="panel"><div class="scroll"><table><thead><tr><th>Week</th><th class="num">Games</th>' +
     '<th class="num">Spread miss, model</th><th class="num">Spread miss, market</th><th class="num">Spread picks</th><th class="num">Total picks</th></tr></thead><tbody>';
   wk.forEach(function (w) {
     var g = weeks[w];
@@ -484,7 +551,7 @@ function buildSeason(el) {
       '</td><td class="num">' + (b === null ? "-" : f1(b)) + '</td><td class="num">' + rs.w + "-" + rs.l +
       '</td><td class="num">' + rt.w + "-" + rt.l + "</td></tr>";
   });
-  h += "</tbody></table></div></div>";
+  h += "</tbody></table></div></div></div>";
   el.innerHTML = h;
 }
 
@@ -502,7 +569,7 @@ function buildRatings(el) {
     [["net", "Net"], ["off", "Offense"], ["def", "Defense"], ["team", "Name"]].map(function (s) {
       return '<button class="chip" data-r="' + s[0] + '" aria-pressed="' + (s[0] === rsort) + '">' + s[1] + "</button>";
     }).join("") + '</div><input type="search" id="rq" placeholder="Find a team" aria-label="Find a team"></div>';
-  h += '<div class="scroll"><table style="max-width:640px"><thead><tr><th class="num">Rank</th><th>Team</th><th class="num">Net</th><th class="num">Offense</th><th class="num">Defense</th></tr></thead><tbody id="rtb"></tbody></table></div>';
+  h += '<div class="panel" style="max-width:760px"><div class="scroll"><table><thead><tr><th class="num">Rank</th><th>Team</th><th class="num">Net</th><th class="num">Offense</th><th class="num">Defense</th><th>Strength</th></tr></thead><tbody id="rtb"></tbody></table></div></div>';
   el.innerHTML = h;
   document.getElementById("rgroup").addEventListener("click", function (e) {
     var s = e.target.getAttribute("data-r"); if (!s) return;
@@ -515,8 +582,14 @@ function buildRatings(el) {
   document.getElementById("rq").addEventListener("input", drawRatings);
   drawRatings();
 }
+function nbar(v, mx) {
+  var w = Math.abs(v) / mx * 50;
+  var left = v >= 0 ? 50 : 50 - w;
+  return '<div class="nb" role="img" aria-label="Net ' + f1(v) + '"><i class="' + (v >= 0 ? "pos" : "neg") + '" style="left:' + left + '%;width:' + w + '%"></i></div>';
+}
 function drawRatings() {
   var q = document.getElementById("rq").value.trim().toLowerCase();
+  var mx = Math.max.apply(null, D.ratings.map(function (r) { return Math.abs(r.net); }).concat([1]));
   var ranked = D.ratings.slice().sort(function (a, b) { return b.net - a.net; });
   var rank = {};
   ranked.forEach(function (r, i) { rank[r.team] = i + 1; });
@@ -527,8 +600,8 @@ function drawRatings() {
   });
   document.getElementById("rtb").innerHTML = list.map(function (r) {
     return '<tr><td class="num">' + rank[r.team] + "</td><td><b>" + esc(r.team) + '</b></td><td class="num"><b>' + f1(r.net) + '</b></td><td class="num">' +
-      f1(r.off) + '</td><td class="num">' + f1(r.def) + "</td></tr>";
-  }).join("") || '<tr><td colspan="5" class="muted">No teams match.</td></tr>';
+      f1(r.off) + '</td><td class="num">' + f1(r.def) + "</td><td>" + nbar(r.net, mx) + "</td></tr>";
+  }).join("") || '<tr><td colspan="6" class="muted">No teams match.</td></tr>';
 }
 
 /* ---------- guide ---------- */

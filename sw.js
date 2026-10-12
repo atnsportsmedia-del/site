@@ -1,4 +1,4 @@
-var CACHE = "cfb-model-v1";
+var CACHE = "cfb-model-v2";
 var SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(SHELL); }));
@@ -13,7 +13,7 @@ self.addEventListener("activate", function (e) {
 self.addEventListener("fetch", function (e) {
   if (e.request.method !== "GET") return;
   e.respondWith(
-    fetch(e.request).then(function (resp) {
+    fetch(e.request, { cache: "no-store" }).then(function (resp) {
       var copy = resp.clone();
       caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
       return resp;

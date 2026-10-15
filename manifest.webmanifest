@@ -1,7 +1,7 @@
 {
-  "name": "CFB Point Model",
+  "name": "Point Model",
   "short_name": "Point Model",
-  "description": "Weekly college football model predictions and scoreboard",
+  "description": "Weekly college football and NFL model predictions and scoreboard",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
